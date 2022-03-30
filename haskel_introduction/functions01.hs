@@ -20,6 +20,11 @@ listConcatend = concat [[11..13], [14..19]] -- [11..19] recebe uma lista de list
 sumValue = sum [1..9] -- retorna a soma dos elemetos
 max = maximum [1..9] -- 9 retorna o maior valor da lista
 min = minimum [1..9] -- 1 retorna o menor valor da lista
+productValue = product [1..9] -- retorn o produto da lista
+
+-- funcoes que produzem listas infinitas
+cycleValues = take 10 (cycle [1,2,3])
+reapeatValues = take 12 (cycle "LOL ")
 
 listMap = [x * 2 | x <- [1..5]] -- pecorre a lista de 1 a 5 e depois executa para todo x que pecorreu a acao x * 2
 
