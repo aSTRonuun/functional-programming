@@ -5,7 +5,7 @@ tailValue = tail[1..9] -- [2..9]
 takeValue = take 3 [1..9] --[1..9] retorna os 3 primeiros
 dropValue = drop 3[1..9] --[4..9] retorna tudo que nao é os 3 primeiros
 
-elemBool = elem 5 [1..9] -- True retorna se o elemento esta na lista ou nao
+elemBool = elem 5 [1..9] -- True retorna se o elemento esta na lista, retorna False caso contrario
 listNull = null [] -- True retorn if a list is empty or not
 lenghtValue = length [1..9] -- return length of list
 listReplicated = replicate 9 0 -- retorna uma lista de 9 elementos 0
