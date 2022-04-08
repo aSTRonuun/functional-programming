@@ -10,7 +10,7 @@ o problema é divido em blocos e, para sua resolução, são implementadas funç
 
 As linguagens que suportam o paradigma funcional - LISP, Scheme e o Haskell.
 
- - Exemplo de código - Fibonnacci
+ - Exemplo de código em Haskell - Fibonnacci
 
 ```haskell
 fib x 
@@ -33,3 +33,62 @@ O paradigma orientado a objetos surgiu como uma grande aposta para resolver garg
 Desse modo, usamos a orientação a objetos quando queremos nos basear na vida real e resolver problemas de software, assim podemos utilzar os pilares da orientação a objetos como herança, polimorfismo e encapsulamento.
 
 As linguagens que suportam o paradigma orientado a objetos - Java, C#, Python, Javascript.
+
+
+ - Exemplo de Código em C#
+
+ ```c#
+    public class Carro
+    {
+        public string Modelo { get; set; }
+
+        public void IniciarViagem(int distancia)
+        {
+        }
+    }
+    static void ManipularCarro()
+    {
+        IList<Carro> carros = new List<Carro>();
+
+        Carro carro = new Carro();
+        carro.Modelo = "Ferrari";
+        carros.Add(carro);
+
+        foreach (Carro c in carros)
+        {
+            c.IniciarViagem(200);
+        }
+     }
+ ```
+
+## Paradigms orientado a eventos
+
+O paradigma de orientação a eventos é usado por toda linguagem dee programação que tem uso de recursos principalmente de gráficos, comos jogos dentre outros. Nesse sentido, a execução do programa se dá a medida que determinados eventos são disparados pelo usuário. Portanto, quem usa é responsáveel pelo momento em que o programa é executado.
+
+As linguagens que suportam o paradigma orientado a eventos - C#, C++, UnrealScript
+
+```c#
+public class SampleEventArgs
+{
+    public SampleEventArgs(string text) { Text = text; }
+    public string Text { get; } // readonly
+}
+
+public class Publisher
+{
+    // Declare the delegate (if using non-generic pattern).
+    public delegate void SampleEventHandler(object sender, SampleEventArgs e);
+
+    // Declare the event.
+    public event SampleEventHandler SampleEvent;
+
+    // Wrap the event in a protected virtual method
+    // to enable derived classes to raise the event.
+    protected virtual void RaiseSampleEvent()
+    {
+        // Raise the event in a thread-safe manner using the ?. operator.
+        SampleEvent?.Invoke(this, new SampleEventArgs("Hello"));
+    }
+}
+```
+
