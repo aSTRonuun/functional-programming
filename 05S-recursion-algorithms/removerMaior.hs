@@ -1,6 +1,6 @@
 removerMaior [] = []
 removerMaior [x] = []
-removerMaior (x:xs) = if x > (head xs) then removerMaior xs else x:removerMaior xs
+removerMaior (x:xs) = 
 
 
 main = do
