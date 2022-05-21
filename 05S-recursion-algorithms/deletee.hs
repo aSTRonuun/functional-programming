@@ -4,7 +4,7 @@ deletee' qtd elem [] = []
 deletee' qtd elem (x:xs) = if elem == x && qtd > 0 then deletee' (qtd-1) elem xs else x : deletee' qtd elem xs
 
 
-deletee elem xs = deletee' 2 elem xs
+deletee elem xs = deletee' 1 elem xs
 
 main = do
     print $ deletee 5 []
