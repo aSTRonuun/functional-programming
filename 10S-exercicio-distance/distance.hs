@@ -14,17 +14,17 @@ exists y xs = elem y xs
 dig2char :: (Eq a, Num a, Enum a) => a -> Char
 dig2char dig = chr (fromEnum dig + fromEnum '0')
 
--- -- verifica se esse valor pode ser inserido nesse índice
--- fit :: (String, Int) ->  Int -> Int -> Bool
--- fit (xs, lim) index value = ...
+-- insere esse valor nesse index e retorna o novo vetor resultante
+set :: String -> Int -> Int -> String
+set xs index value = take index xs ++ [dig2char value] ++ drop (index + 1) xs
+
+-- verifica se esse valor pode ser inserido nesse índice
+fit :: (String, Int) ->  Int -> Int -> Bool
+fit (xs, lim) index value = not (exists (dig2char value) (neib xs index lim))
 
 -- -- pega as posições de todos os .
 -- getHoles :: String -> [Int]
 -- getHoles xs = ...
-
--- -- insere esse valor nesse index e retorna o novo vetor resultante
--- set :: String -> Int -> Int -> String
--- set xs index value = ...
 
 -- -- tenta resolver o problema para essa posição
 -- -- se é possível resolver, retorna Just resposta, senão Nothing
@@ -62,18 +62,18 @@ dig2charTest :: IO ()
 dig2charTest = do
     print $ map dig2char [0..9]
 
--- setTest :: IO ()
--- setTest = do
---     print $ set "12345" 0 9 == "92345"
---     print $ set "12345" 1 9 == "19345"
---     print $ set "12345" 4 9 == "12349"
+setTest :: IO ()
+setTest = do
+    print $ set "12345" 0 9 == "92345"
+    print $ set "12345" 1 9 == "19345"
+    print $ set "12345" 4 9 == "12349"
 
--- fitTest :: IO ()
--- fitTest = do -- (fit ("12.345", 1) 2) se torna uma função curry faltando só uma var que seria o valor recebido do vetor
---     print $ map (fit ("12.345", 1) 2) [1,2,3,4,5] == [True, False, False, True, True]
---     print $ map (fit ("12.345", 2) 2) [1,2,3,4,5] == [False, False, False, False, True]
---     print $ map (fit ("12.345", 3) 2) [1,2,3,4,5] == [False, False, False, False, False]
---     print $ map (fit ("12345.", 4) 5) [1,2,3,4,5] == [True, False, False, False, False]
+fitTest :: IO ()
+fitTest = do -- (fit ("12.345", 1) 2) se torna uma função curry faltando só uma var que seria o valor recebido do vetor
+    print $ map (fit ("12.345", 1) 2) [1,2,3,4,5] == [True, False, False, True, True]
+    print $ map (fit ("12.345", 2) 2) [1,2,3,4,5] == [False, False, False, False, True]
+    print $ map (fit ("12.345", 3) 2) [1,2,3,4,5] == [False, False, False, False, False]
+    print $ map (fit ("12345.", 4) 5) [1,2,3,4,5] == [True, False, False, False, False]
 
 -- getHolesTest :: IO ()
 -- getHolesTest = do
