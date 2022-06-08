@@ -22,27 +22,36 @@ set xs index value = take index xs ++ [dig2char value] ++ drop (index + 1) xs
 fit :: (String, Int) ->  Int -> Int -> Bool
 fit (xs, lim) index value = not (exists (dig2char value) (neib xs index lim))
 
--- -- pega as posições de todos os .
--- getHoles :: String -> [Int]
--- getHoles xs = ...
+-- pega os indexes de todos os .
+getHoles :: String -> [Int]
+getHoles xs = [i | i <- [0..length xs - 1], xs !! i == '.'] 
 
--- -- tenta resolver o problema para essa posição
--- -- se é possível resolver, retorna Just resposta, senão Nothing
--- -- problema (xs, lim)
--- -- holes: lista de posições a serem preenchidas
--- -- hindex: posicao atual no vetor de holes
--- solve :: (String, Int) -> [Int] -> Int -> Maybe String
--- solve (xs, lim) holes hindex = ...
+-- tenta resolver o problema para essa posição
+-- se é possível resolver, retorna Just resposta, senão Nothing
+-- problema (xs, lim)
+-- holes: lista de posições a serem preenchidas
+-- hindex: posicao atual no vetor de holes
+solve :: (String, Int) -> [Int] -> Int -> Maybe String
+solve (xs, lim) holes hindex = if hindex >= length holes then Just xs else
+    let
+        value = head holes
+        index = holes !! hindex
+        newxs = set xs index value
+        newholes = tail holes
+    in
+        if fit (newxs, lim) index value then solve (newxs, lim) newholes (hindex + 1) else Nothing
 
--- -- prepara a entrada para a função recursiva de resolução
--- mainSolver :: String -> Int -> String
--- mainSolver xs lim = ...
+-- prepara a entrada para a função recursiva de resolução
+mainSolver :: String -> Int -> String
+mainSolver xs lim = case solve (xs, lim) (getHoles xs) 0 of
+    Just xs -> xs
+    Nothing -> "Impossível"
 
--- main :: IO ()
--- main = do
---     xs <- getLine
---     lim <- readLn :: IO Int
---     putStrLn $ mainSolver xs lim
+main :: IO ()
+main = do
+    xs <- getLine
+    lim <- readLn :: IO Int
+    putStrLn $ mainSolver xs lim
 
 
 ------------------------------------------------------------------------------------
@@ -75,16 +84,16 @@ fitTest = do -- (fit ("12.345", 1) 2) se torna uma função curry faltando só u
     print $ map (fit ("12.345", 3) 2) [1,2,3,4,5] == [False, False, False, False, False]
     print $ map (fit ("12345.", 4) 5) [1,2,3,4,5] == [True, False, False, False, False]
 
--- getHolesTest :: IO ()
--- getHolesTest = do
---     print $ getHoles "12.3.." == [2,4,5]
---     print $ getHoles "12.3.4" == [2,4]
---     print $ getHoles "...3.4" == [0,1,2,4]
+getHolesTest :: IO ()
+getHolesTest = do
+    print $ getHoles "12.3.." == [2,4,5]
+    print $ getHoles "12.3.4" == [2,4]
+    print $ getHoles "...3.4" == [0,1,2,4]
 
--- mainTest :: IO ()
--- mainTest = do
---     print $ mainSolver "01.2." 3 == "01320"
---     print $ mainSolver ".0..231..5" 5 == "1045231045"
---     print $ mainSolver "2..0..............3..........." 3 == "213021302130213021302130213021"
---     print $ mainSolver "0..32..41." 5 == "0413250413"
---     print $ mainSolver "9....7.620.5318....." 9 == "95318746209531874620"
+mainTest :: IO ()
+mainTest = do
+    print $ mainSolver "01.2." 3 == "01320"
+    print $ mainSolver ".0..231..5" 5 == "1045231045"
+    print $ mainSolver "2..0..............3..........." 3 == "213021302130213021302130213021"
+    print $ mainSolver "0..32..41." 5 == "0413250413"
+    print $ mainSolver "9....7.620.5318....." 9 == "95318746209531874620"
