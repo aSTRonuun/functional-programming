@@ -26,26 +26,30 @@ fit (xs, lim) index value = not (exists (dig2char value) (neib xs index lim))
 getHoles :: String -> [Int]
 getHoles xs = [i | i <- [0..length xs - 1], xs !! i == '.'] 
 
+fitList :: String -> Int -> Int -> [Int]
+fitList xs lim index = [i | i <- [0..length xs - 1], fit (xs, lim) index i]
+
 -- tenta resolver o problema para essa posição
 -- se é possível resolver, retorna Just resposta, senão Nothing
 -- problema (xs, lim)
 -- holes: lista de posições a serem preenchidas
 -- hindex: posicao atual no vetor de holes
 solve :: (String, Int) -> [Int] -> Int -> Maybe String
-solve (xs, lim) holes hindex = if hindex >= length holes then Just xs else
-    let
-        value = head holes
+solve (xs, lim) holes hindex
+    | hindex == length holes = Just xs
+    | null fList = Nothing
+    | otherwise = if null answers then Nothing else Just (head answers)
+    where
         index = holes !! hindex
-        newxs = set xs index value
-        newholes = tail holes
-    in
-        if fit (newxs, lim) index value then solve (newxs, lim) newholes (hindex + 1) else Nothing
+        fList = fitList xs lim index
+        branches = [solve (set xs index (dig2char v), lim) holes (hindex + 1) | v <- fList]
+        answers = [x | Just x <- branches]
+
+
 
 -- prepara a entrada para a função recursiva de resolução
 mainSolver :: String -> Int -> String
-mainSolver xs lim = case solve (xs, lim) (getHoles xs) 0 of
-    Just xs -> xs
-    Nothing -> "Impossível"
+mainSolver xs lim = fromJust (solve (xs, lim) (getHoles xs) 0)
 
 main :: IO ()
 main = do
