@@ -15,8 +15,8 @@ dig2char :: (Eq a, Num a, Enum a) => a -> Char
 dig2char dig = chr (fromEnum dig + fromEnum '0')
 
 -- insere esse valor nesse index e retorna o novo vetor resultante
-set :: String -> Int -> Int -> String
-set xs index value = take index xs ++ [dig2char value] ++ drop (index + 1) xs
+set :: String -> Int -> Char -> String
+set xs index value = take index xs ++ [value] ++ drop (index + 1) xs
 
 -- verifica se esse valor pode ser inserido nesse índice
 fit :: (String, Int) ->  Int -> Int -> Bool
@@ -27,7 +27,7 @@ getHoles :: String -> [Int]
 getHoles xs = [i | i <- [0..length xs - 1], xs !! i == '.'] 
 
 fitList :: String -> Int -> Int -> [Int]
-fitList xs lim index = [i | i <- [0..length xs - 1], fit (xs, lim) index i]
+fitList xs lim index = [i | i <- [0..lim], fit (xs, lim) index i]
 
 -- tenta resolver o problema para essa posição
 -- se é possível resolver, retorna Just resposta, senão Nothing
@@ -38,14 +38,12 @@ solve :: (String, Int) -> [Int] -> Int -> Maybe String
 solve (xs, lim) holes hindex
     | hindex == length holes = Just xs
     | null fList = Nothing
-    | otherwise = if null answers then Nothing else Just (head answers)
+    | otherwise = if null answers then Nothing else head answers
     where
         index = holes !! hindex
         fList = fitList xs lim index
         branches = [solve (set xs index (dig2char v), lim) holes (hindex + 1) | v <- fList]
-        answers = [x | Just x <- branches]
-
-
+        answers = [Just x | Just x <- branches]
 
 -- prepara a entrada para a função recursiva de resolução
 mainSolver :: String -> Int -> String
@@ -77,9 +75,9 @@ dig2charTest = do
 
 setTest :: IO ()
 setTest = do
-    print $ set "12345" 0 9 == "92345"
-    print $ set "12345" 1 9 == "19345"
-    print $ set "12345" 4 9 == "12349"
+    print $ set "12345" 0 '9' == "92345"
+    print $ set "12345" 1 '9' == "19345"
+    print $ set "12345" 4 '9' == "12349"
 
 fitTest :: IO ()
 fitTest = do -- (fit ("12.345", 1) 2) se torna uma função curry faltando só uma var que seria o valor recebido do vetor
