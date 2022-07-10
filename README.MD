@@ -1,1 +1,0 @@
-## Functional programming course repository
