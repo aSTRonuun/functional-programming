@@ -1,0 +1,3 @@
+textBase 
+
+changeBase n base 
